@@ -22,10 +22,11 @@ headers = {
     'Referer': 'https://lemonhd.org/torrents.php',
     'authority': 'lemonhd.org'
 }
-if os.path.exists('cookie.txt'):
-    headers['cookie']=open('cookie.txt').read()
-else:
-    sys.exit('无cookie')
+def check_cookie():
+    if os.path.exists('cookie.txt'):
+        headers['cookie']=open('cookie.txt').read()
+    else:
+        return '无cookie'
 route_headers = headers
 imgheaders = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4277.0 Safari/537.36 Edg/87.0.658.0',
@@ -33,6 +34,7 @@ imgheaders = {
 
 
 def start_process(url):
+    check_cookie()
     session = requests.Session()
     try:
         response = session.get(url, headers=headers, timeout=8)
@@ -72,7 +74,6 @@ def start_process(url):
     check_team=team_processing(route, medium, title)
     check_tag=tag_check(title, session,medium,subtitle,info,Production_team)
     check_link=link_check(soup, response)
-    #img_check(soup, imgheaders)
     session.close()
     movie_type_false='类型获取失败'
     if title_check_ans:
@@ -87,7 +88,7 @@ def start_process(url):
                check_resolving_power,check_region,check_team,check_tag, check_link
 
 if __name__ == '__main__':
-    url = 'https://lemonhd.org/details_doc.php?id=196955'
+    url = 'https://lemonhd.org/details_movie.php?id=197013'
     start = time.time()
     proess = start_process(url)
     end = time.time()

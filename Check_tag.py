@@ -13,6 +13,7 @@ def tag_check(title, session,medium,subtitle,info,Production_team):
     tag_check3=re.search('diy',subtitle,re.I)
     tag_check3_1=re.search('diy',str(tag),re.I)
     tag_check4=re.search('中字',str(tag))
+    tag_check4_9=re.search('中字',subtitle)
     tag_check4_1=re.search('原生中字',str(tag))
     tag_check4_2=re.search('Subtitle.*Chinese',info,re.I)
     tag_check4_3=re.findall('Language.*Chinese',info,re.I)
@@ -23,6 +24,7 @@ def tag_check(title, session,medium,subtitle,info,Production_team):
     tag_check4_6=re.search('Traditional',info)
     tag_check5=re.search('Audio.*Chinese',info,re.I)
     tag_check5_1=re.search('国语',str(tag))
+    tag_check5_2=re.search('国语',subtitle)
     tag_check6=re.search('Presentation Graphics.*Chinese',info)
     tag_check7=re.search('Cantonese',info,re.I)
     tag_check7_1=re.search('Mandarin',info,re.I)
@@ -39,9 +41,9 @@ def tag_check(title, session,medium,subtitle,info,Production_team):
         tag_feedback.append('官种')
     if tag_check7:
         tag_feedback.append('粤语')
-    if tag_check7_1:
+    if tag_check7_1 or tag_check5_2:
         tag_feedback.append('国语')
-    if tag_check6:
+    if tag_check6 or tag_check4_9:
         tag_feedback.append('中字')
     if tag_check3 and not tag_check3_1 and (medium=='Blu-ray' or medium=='UHD Blu-ray'):
         tag_feedback.append('Diy')

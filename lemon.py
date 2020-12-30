@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import tkinter as tk
 import os
 from tkinter import scrolledtext
@@ -20,6 +21,12 @@ class MyApp(object):
         btn = tk.Button(self.frame, text="开始审核", height=3,
                         width=19, fg='red', command=self.openFrame)
         btn.pack()
+        def on_closing():
+            if messagebox.askokcancel("Quit", "Do you want to quit?"):
+                self.root.destroy()
+
+
+        self.root.protocol("WM_DELETE_WINDOW", on_closing)
 
 
     # ----------------------------------------------------------------------
@@ -87,7 +94,11 @@ class MyApp(object):
                 else:
                     Label(otherFrame, text='全局检查：全部正常', font=('微软雅黑', '20')).place(x=100, y=255)
             else:
-                Label(otherFrame, text='请输入正确的url',fg='red').place(x=370)
+                from start_check import check_cookie
+                if check_cookie()=='无cookie':
+                    Label(otherFrame, text='无cookie，请添加', fg='red').place(x=370)
+                else:
+                    Label(otherFrame, text='请输入正确的url',fg='red').place(x=370)
 
     # ----------------------------------------------------------------------
     def onCloseOtherFrame(self, otherFrame):
@@ -158,4 +169,5 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = MyApp(root)
     root.mainloop()
+
 
