@@ -1,15 +1,13 @@
 from bs4 import BeautifulSoup
-import requests
 import re
 import os
 import time
 import sys
-from lxml import etree
 from Main_function import Principal_function
 from MyThread import MyThread
 from Check_seed import email_jimi
 from pyhtml import *
-import threading
+
 def cookie_test():
     if not os.path.exists ('cookie.txt'):
         return False
@@ -41,10 +39,6 @@ def start_process(url):
         movie_type = movie_message_tv[0].strip('&nbsp;')
         Complete=re.search('是否完结</b>：(.*)</td>',response.text)
     elif url_type_movie:
-        messagerow = re.findall('媒介<.b>: (.*)&nbsp;&nbsp;&nbsp;<b>'
-                                '编码</b>: (.*)&nbsp;&nbsp;&nbsp;<b>音频编码</b>: (.*)&nbsp;'
-                                '&nbsp;&nbsp;<b>分辨率</b>: (.*)&nbsp;&nbsp;&nbsp;<b>地区'
-                                '</b>: (.*)&nbsp;&nbsp;&nbsp;<b>制作组</b>: (.*)&nbsp;&nbsp;&nbsp;<b>版本</b>: (.*)</td>', response.text)
         movie_message = re.findall ('类型</b>:.(.*)</td>', response.text)
         movie_type = movie_message[0]
     else:
@@ -55,7 +49,7 @@ def start_process(url):
 
 if __name__ == '__main__':
     start = time.time ()
-    url = 'https://lemonhd.org/details_doc.php?id=240549&group_id=35290632'
+    url = 'https://lemonhd.org/details_tv.php?id=241852'
     proess = start_process (url)
     for o in proess:
         print(o)

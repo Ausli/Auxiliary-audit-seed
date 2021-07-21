@@ -2,10 +2,9 @@ import re
 import numpy as np
 from .email_decode import email_jimi
 def title_get(soup):
-    titlerow = soup.select('#top')[0].text
+    titlerow = soup.select('#top')[0].text.strip()
     title2 = re.match('(.*)    ', titlerow)
     titlemail = soup.select('.__cf_email__ ', )
-
     def title_check2():
         if title2:
             title = title2.group()
