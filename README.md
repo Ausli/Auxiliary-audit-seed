@@ -2,8 +2,15 @@
 
 check lemon seed
 
-2020年12月30日
+2021年7月26日
 
+教程：
+1.在柠檬官网按f12键，获取cookie
+
+'''
+cookie样式：
+c_secure_ssl=******; c_secure_uid=******; c_secure_pass=******; c_secure_tracker_ssl=******; c_secure_login=******
+'''
 本脚本仅供LemonHD审核组使用，目前脚本处于测试阶段
 
 脚本审核规则如下：
