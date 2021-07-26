@@ -1,7 +1,8 @@
 from Check_seed import *
+from pyhtml.email_decode import email_jimi
 from MyThread import MyThread
 import re
-import sys
+
 
 def Principal_function(messagerow,soup,route,subtitle,response,movie_type,Complete):
     medium = messagerow[0]
@@ -22,12 +23,13 @@ def Principal_function(messagerow,soup,route,subtitle,response,movie_type,Comple
         email_ = email_jimi(x_info[0])
         info = re.sub('<a class="__cf_email__".*>', email_, info)
     title = title_get(soup)
+
     title_check_ans = title_check(title)
     # 创建9个线程
     task = MyThread(medium_check_All, (route, medium, info, title, soup))
     task2 = MyThread(check_code_All, (code, info, medium, route, title))
     task3 = MyThread(check_Audio_coding_All, (Audio_coding, info, Production_team, title))
-    task4 = MyThread(check_resolving_power_All, (resolving_power, info, medium, route, title,movie_type))
+    task4 = MyThread(check_resolving_power_All, (resolving_power, info, medium))
     task5 = MyThread(check_region_all, (soup, region))
     task6 = MyThread(team_processing, (route, medium, title,info))
     task7 = MyThread(tag_check, (title, response, medium, subtitle, info, Production_team,Complete,region))

@@ -5,7 +5,6 @@ import time
 import sys
 from Main_function import Principal_function
 from MyThread import MyThread
-from Check_seed import email_jimi
 from pyhtml import *
 
 def cookie_test():
@@ -49,7 +48,7 @@ def start_process(url):
 
 if __name__ == '__main__':
     start = time.time ()
-    url = 'https://lemonhd.org/details_tv.php?id=241852'
+    url = 'https://lemonhd.org/details_doc.php?id=225765&group_id=27615467'
     proess = start_process (url)
     for o in proess:
         print(o)

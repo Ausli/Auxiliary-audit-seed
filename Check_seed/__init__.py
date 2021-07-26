@@ -8,7 +8,7 @@ from .Check_resolving_power import  check_resolving_power_All
 from .Check_production_team import team_processing
 from .Check_link_and_Get_info import vidioparme,link_check
 from .Check_Get_title import title_get,title_check
-from .email_decode import email_jimi
+
 from .Check_tag import tag_check
 __all__=['medium_check_All','check_code_All','check_region_all','movie_type_check_All','img_check','check_Audio_coding_All'
-         ,'check_resolving_power_All','team_processing','vidioparme','link_check','title_get','title_check','email_jimi','tag_check']
+         ,'check_resolving_power_All','team_processing','vidioparme','link_check','title_get','title_check','tag_check']

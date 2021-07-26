@@ -1,6 +1,5 @@
 import re
-import numpy as np
-from .email_decode import email_jimi
+from pyhtml.email_decode import email_jimi
 def title_get(soup):
     titlerow = soup.select('#top')[0].text.strip()
     title2 = re.match('(.*)    ', titlerow)

@@ -1,6 +1,4 @@
-PyExecJS
 beautifulsoup4
 requests
-numpy
 fake_useragent
 lxml

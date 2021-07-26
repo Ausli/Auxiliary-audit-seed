@@ -1,11 +1,10 @@
-from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox,Label,Button
 import tkinter as tk
 import os
 from tkinter import scrolledtext
-from test_cookie import cookie_test
+from cookie_test import cookie_test
 from start_check import start_process
-
+import re
 
 class MyApp (object):
     """"""
@@ -45,10 +44,10 @@ class MyApp (object):
         otherFrame.resizable (0, 0)
         otherFrame.title ("lemon审核", )
         otherFrame.protocol ("WM_DELETE_WINDOW", self.on_closing)
-        global url_txt
+
         handler = lambda: self.onCloseOtherFrame (otherFrame)
-        url_txt = tk.Entry (otherFrame, width=44)
-        url_txt.place (x=35, y=0)
+        self.url_txt = tk.Entry (otherFrame, width=65)
+        self.url_txt.place (x=25)
         Label (otherFrame, text="url:", font=('微软雅黑', '10')).place (x=0, y=0)
         check = tk.Button (otherFrame, text="check", width=12, height=5, command=lambda: btn_func ())
         check.place (x=607, y=202)
@@ -72,38 +71,41 @@ class MyApp (object):
         Text1.place (y=25), Text2.place (y=45), Text3.place (y=65), Text4.place (y=85)
         Text5.place (y=105), Text6.place (x=300, y=105), Text7.place (y=125), Text8.place (x=300, y=125)
         Text9.place (y=145), Text10.place (x=300, y=145), Text11.place (y=165), Text12.place (y=185)
-        Text13.place (x=200, y=265), Text14.place (x=370)
+        Text13.place (x=200, y=265), Text14.place (x=500)
 
         # ----------------------------------------------------------------------
         # Label_nums()
         def btn_func():
             """按键的触发事件"""
-            url_search = re.search ('lemonhd.org', url_txt.get ())
-            if url_search:
-                input_data = start_process (url_txt.get ())
-                Text14['text'] = ''
-                Text1['text'] = '标题：' + input_data[0]
-                Text2['text'] = '副标题：' + input_data[1]
-                Text3['text'] = '类型：' + input_data[2]
-                Text4['text'] = '详细信息：' + str (input_data[3])
-                Text5['text'] = '媒介检查：' + input_data[4]
-                Text6['text'] = '编码检查：' + input_data[5]
-                Text7['text'] = '音频检查：' + input_data[6]
-                Text8['text'] = '分辨率检查：' + input_data[7]
-                Text9['text'] = '地区检查：' + input_data[8]
-                Text10['text'] = '制作组检查：' + input_data[9]
-                Text11['text'] = '标签检查：' + input_data[10]
-                Text12['text'] = '链接及info检查：' + input_data[11]
-                pass_false = re.search ('错误', str (input_data))
-                pass_Confirm = re.search ('待确认', str (input_data))
-                if pass_false:
-                    Text13['text'] = '全局检查：检查有错误发生'
-                    Text13['fg'] = 'red'
-                elif pass_Confirm:
-                    Text13['text'] = '全局检查：标签待确认'
+            url_search = re.search ('lemonhd.org', self.url_txt.get ())
+            try:
+                if url_search:
+                    input_data = start_process (self.url_txt.get ())
+                    Text14['text'] = ''
+                    Text1['text'] = '标题：' + input_data[0]
+                    Text2['text'] = '副标题：' + input_data[1]
+                    Text3['text'] = '类型：' + input_data[2]
+                    Text4['text'] = '详细信息：' + str (input_data[3])
+                    Text5['text'] = '媒介检查：' + input_data[4]
+                    Text6['text'] = '编码检查：' + input_data[5]
+                    Text7['text'] = '音频检查：' + input_data[6]
+                    Text8['text'] = '分辨率检查：' + input_data[7]
+                    Text9['text'] = '地区检查：' + input_data[8]
+                    Text10['text'] = '制作组检查：' + input_data[9]
+                    Text11['text'] = '标签检查：' + input_data[10]
+                    Text12['text'] = '链接及info检查：' + input_data[11]
+                    pass_false = re.search ('错误', str (input_data))
+                    pass_Confirm = re.search ('待确认', str (input_data))
+                    if pass_false:
+                        Text13['text'] = '全局检查：检查有错误发生'
+                        Text13['fg'] = 'red'
+                    elif pass_Confirm:
+                        Text13['text'] = '全局检查：标签待确认'
+                    else:
+                        Text13['text'] = '全局检查：全部正常'
                 else:
-                    Text13['text'] = '全局检查：全部正常'
-            else:
+                    Text14['text'] = '请输入正确的url'
+            except:
                 Text14['text'] = '请输入正确的url'
 
     # ----------------------------------------------------------------------
