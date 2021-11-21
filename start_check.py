@@ -22,8 +22,7 @@ def start_process(url):
     if cookie_test() == False:
         sys.exit('无cookie')
     url_id = re.search('\d+', url).group()
-    response = get_response(url)
-    route = get_route(url_id)
+    response ,route=get_html_data(url,url_id)
     soup = BeautifulSoup(response.text,'html.parser')
     titlemail = soup.select ('.__cf_email__ ', )
     subtitle = re.findall('副标题</td><td class="rowfollow" valign="top" align="left">(.*)</td></tr>', response.text)[0]
@@ -48,9 +47,9 @@ def start_process(url):
 
 if __name__ == '__main__':
     start = time.time ()
-    url = 'https://lemonhd.org/details_doc.php?id=225765&group_id=27615467'
+    url = 'https://lemonhd.org/details_doc.php?id=264675&group_id=264675'
     proess = start_process (url)
     for o in proess:
         print(o)
     end = time.time ()
-    print (end - start)
+    #print (end - start)

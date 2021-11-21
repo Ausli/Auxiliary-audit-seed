@@ -1,4 +1,4 @@
-import requests
+import httpx
 import time
 import re
 import sys
@@ -18,7 +18,7 @@ def proxy():
     return proxies
 def get_route(url_id):
     try:
-        route = requests.get('https://lemonhd.org/viewfilelist.php?id=' + url_id, headers=headersdata(), timeout=8)
+        route = httpx.get('https://lemonhd.org/viewfilelist.php?id=' + url_id, headers=headersdata(), timeout=8)
         if route.status_code==(200 or 304)and route != 'None':
             return route
         else:
@@ -26,18 +26,10 @@ def get_route(url_id):
     except:
             time.sleep (2)
             print('route重新连接')
-            try:
-                route = requests.get('https://lemonhd.org/viewfilelist.php?id=' + url_id,headers=headersdata(), timeout=12)
-                if route.status_code == (200 or 304)and  route != 'None':
-                    return route
-                else:
-                    raise ValueError
-            except:
-                route = requests.get ('https://lemonhd.org/viewfilelist.php?id=' + url_id, headers=headersdata (),
-                                      timeout=15)
-                if route.status_code == (200 or 304) and route != 'None':
-                    return route
-                else:
-                    raise ValueError
+            route = httpx.get('https://lemonhd.org/viewfilelist.php?id=' + url_id,headers=headersdata(), timeout=12)
+            if route.status_code == (200 or 304)and  route != 'None':
+                return route
+            else:
+                raise ValueError
 
 

@@ -17,7 +17,7 @@ def tag_check(title, response,medium,subtitle,info,Production_team,Complete,regi
     tag_check9_1=re.search('League',Production_team,re.I)
     tag_check10=re.search('Audio.*粤语',info,re.I)
     tag_check12=re.search('语.*言.*粤语',response.text)
-    url_type_tv=re.search('tv',response.url)
+    url_type_tv=re.search('tv',str(response.url))
     if region=='HK&TW(港台)'and tag_check12:
         tag_feedback.append('粤语')
     if url_type_tv:
@@ -33,8 +33,8 @@ def tag_check(title, response,medium,subtitle,info,Production_team,Complete,regi
         tag_feedback.append('DIY')
     if tag_check3_1:
         tag_feedback.append ('DIY')
-    if (medium=='Blu-ray' or medium=='UHD Blu-ray'or medium=='DVD') and not (tag_check3 or tag_check3_1)  :
-        tag_feedback.append('Untouched')
+    # if (medium=='Blu-ray' or medium=='UHD Blu-ray'or medium=='DVD') and not (tag_check3 or tag_check3_1)  :
+    #     tag_feedback.append('Untouched')
     if medium=='Blu-ray':
         cc=re.search('Criterion Collection',title)
         cc2=re.search('CC.*原盘',subtitle)

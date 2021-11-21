@@ -1,7 +1,7 @@
 import re
 from bs4 import BeautifulSoup
 
-
+#检测rout制作组
 def team_check(team_text):
     team_type = re.findall ("-(.*)", team_text.replace('-ray',''))
     if team_type:
@@ -22,6 +22,7 @@ def title_team_check(route):
         if team_data2:
             teamdata.add(team_data2)
     return teamdata
+
 def Blu_ray_team_check(teamdata,info):
     Bluray_check=re.search('Title.*|name.*',info)
     if Bluray_check:
@@ -32,11 +33,10 @@ def Blu_ray_team_check(teamdata,info):
             return '制作组检查无误为' + str(teamdata)
 
 
-def team_processing(route, medium, title,info):
+def team_processing(route, medium, title):
     title_team = team_check(title)
     teamdata=title_team_check(route)
     if medium == 'Blu-ray' or medium == 'UHD Blu-ray' :
-        #return Blu_ray_team_check(teamdata,info)
         return '原盘跳过制作组检查'
     if len(teamdata) == 0 and title_team == None:
         return '没有制作组'

@@ -1,5 +1,6 @@
 from tkinter import messagebox,Label,Button
 import tkinter as tk
+from tkinter import BOTTOM
 import os
 from tkinter import scrolledtext
 from cookie_test import cookie_test
@@ -13,16 +14,16 @@ class MyApp (object):
     def __init__(self, parent):
         """Constructor"""
         self.root = parent
-        self.root.protocol ("WM_DELETE_WINDOW", self.on_closing)
-        self.root.geometry ('350x300')
+        self.root.protocol ("WM_DELETE_checkFrame", self.on_closing)
+        self.root.geometry ('700x300')
         self.root.resizable (0, 0)
         self.root.title ("lemon审核工具")
-        self.frame = tk.Frame (parent)
-        self.btn = tk.Button (self.frame, text="开始审核", height=3,
+        #self.frame = tk.Frame (parent)
+        self.start_check_btn = tk.Button (self.root, text="开始审核", height=3,
                               width=19, fg='red', command=self.openFrame)
         self.insert_photo ()
         self.check_Cookie ()
-        self.frame.place (x=208, y=240)
+        #self.frame.place (x=208, y=240)
 
 
     # ----------------------------------------------------------------------
@@ -36,6 +37,51 @@ class MyApp (object):
         if messagebox.askokcancel (self.close, "Do you want to quit?", ):
             self.root.destroy ()
 
+    # ----------------------------------------------------------------------
+    def check_Frame(self,url):
+        checkFrame = tk.Toplevel()
+        checkFrame.geometry("300x230")
+        #checkFrame.resizable(0, 0)
+        checkFrame.title("审核", )
+        var = tk.StringVar()  # 创建变量var 用来将 radiobutton 的值和 Label 的值联系在一起
+        l = tk.Label(checkFrame,
+                     bg='yellow',
+                     width=25,
+                     text='请选择审核结果，默认审核通过')
+        l.pack()
+        var.set('通过')
+        def print_selection():
+            l.config(text='审核 ' + var.get())
+        r1 = tk.Radiobutton(checkFrame,
+                            text='通过',
+                            # 当我们鼠标选中了其中一个选项，把value的值A放到变量var中，然后赋值给variable
+                            variable=var,
+                            value='通过',
+                            command=print_selection,
+                            )
+        r1.place(x=75,y=25)
+        r2 = tk.Radiobutton(checkFrame,
+                            text='不通过',
+                            variable=var,
+                            value='不通过',
+                            command=print_selection
+                            )
+        r2.place(x=150,y=25)
+        check_txt =  scrolledtext.ScrolledText (checkFrame, width=40, height=10)
+        check_txt.place(y=50)
+        from pyhtml.lemon_check_submit import check_submit
+        def submit_check():
+            if var.get() =='通过':
+                s=check_submit(url,'ok')
+            else:
+                s=check_submit(url, 'fail',check_txt.get(1.0, 'end').strip('\n'))
+            self.Text13['text']='操作成功' if s == 200 else '操作失败'
+            checkFrame.withdraw()
+
+
+        check_submit_btn = tk.Button(checkFrame, text="提交", width=8, height=1,command=lambda: submit_check())
+        check_submit_btn.pack(side=BOTTOM)
+    # ----------------------------------------------------------------------
     def openFrame(self):
         """"""
         self.hide ()
@@ -43,16 +89,14 @@ class MyApp (object):
         otherFrame.geometry ("700x300")
         otherFrame.resizable (0, 0)
         otherFrame.title ("lemon审核", )
-        otherFrame.protocol ("WM_DELETE_WINDOW", self.on_closing)
-
-        handler = lambda: self.onCloseOtherFrame (otherFrame)
+        otherFrame.protocol ("WM_DELETE_checkFrame", self.on_closing)
         self.url_txt = tk.Entry (otherFrame, width=65)
         self.url_txt.place (x=25)
         Label (otherFrame, text="url:", font=('微软雅黑', '10')).place (x=0, y=0)
         check = tk.Button (otherFrame, text="check", width=12, height=5, command=lambda: btn_func ())
-        check.place (x=607, y=202)
-        btn = tk.Button (otherFrame, text="back", command=handler)
-        btn.place (x=620, y=152, width=80, height=50)
+        check.place (x=608, y=204)
+        btn = tk.Button (otherFrame, text="back", command=lambda: self.onCloseOtherFrame (otherFrame))#Approved  Audit failed
+        btn.place (x=607, y=0, width=100, height=50)
         # -----------------------------------------------------------------------
         Text1 = Label (otherFrame, text='标题：')
         Text2 = Label (otherFrame, text='副标题：')
@@ -66,12 +110,12 @@ class MyApp (object):
         Text10 = Label (otherFrame, text='制作组检查：')
         Text11 = Label (otherFrame, text='标签检查：')
         Text12 = Label (otherFrame, text='链接及info检查：')
-        Text13 = Label (otherFrame, text='全局检查：', font=('微软雅黑', '20'))
+        self.Text13 = Label (otherFrame, text='全局检查：', font=('微软雅黑', '20'))
         Text14 = Label (otherFrame, text='', fg='red')
         Text1.place (y=25), Text2.place (y=45), Text3.place (y=65), Text4.place (y=85)
         Text5.place (y=105), Text6.place (x=300, y=105), Text7.place (y=125), Text8.place (x=300, y=125)
         Text9.place (y=145), Text10.place (x=300, y=145), Text11.place (y=165), Text12.place (y=185)
-        Text13.place (x=200, y=265), Text14.place (x=500)
+        self.Text13.place (x=200, y=265), Text14.place (x=500)
 
         # ----------------------------------------------------------------------
         # Label_nums()
@@ -97,12 +141,13 @@ class MyApp (object):
                     pass_false = re.search ('错误', str (input_data))
                     pass_Confirm = re.search ('待确认', str (input_data))
                     if pass_false:
-                        Text13['text'] = '全局检查：检查有错误发生'
-                        Text13['fg'] = 'red'
+                        self.Text13['text'] = '全局检查：检查有错误发生'
+                        self.Text13['fg'] = 'red'
                     elif pass_Confirm:
-                        Text13['text'] = '全局检查：标签待确认'
+                        self.Text13['text'] = '全局检查：标签待确认'
                     else:
-                        Text13['text'] = '全局检查：全部正常'
+                        self.Text13['text'] = '全局检查：全部正常'
+                    self.check_Frame(self.url_txt.get ())
                 else:
                     Text14['text'] = '请输入正确的url'
             except:
@@ -122,36 +167,29 @@ class MyApp (object):
 
     # ----------------------------------------------------------------------
     def insert_photo(self):
-        from logo import img_data
+        from logo import img
         from base64 import b64decode
-        def get_pic(pic_code, pic_name):
-            image = open (pic_name, 'wb')
-            image.write (b64decode (pic_code))
-            image.close ()
-
-        get_pic (img_data, 'logo.png')
-        global photo
-        photo = tk.PhotoImage (file='logo.png')
+        self.photo = tk.PhotoImage (data=b64decode(img))
         theLabel = tk.Label (self.root,
-                             image=photo,  # 加入图片
+                             image=self.photo,  # 加入图片
                              compound='bottom')
         theLabel.pack ()
-        os.remove ('logo.png')
+
 
     # ----------------------------------------------------------------------
     def check_Cookie(self):
         lbl = Label (self.root, text="Cookie:")
         lbl.place (x=0, y=160)
-        txt = scrolledtext.ScrolledText (self.root, width=40, height=9)
-        txt.place (x=50, y=110)
+        txt = scrolledtext.ScrolledText (self.root, width=82, height=5)
+        txt.place (x=60, y=140)
         checkrequest = Label (self.root, text="点击添加Cookie", font=('微软雅黑', '13'))
         if os.path.exists ('cookie.txt'):
             if len (open ('cookie.txt').read ()) > 10:
                 checkrequest.configure (text="已保存cookie，请测试")
-                self.btn.pack ()
-        checkrequest.place (x=0, y=240)
+                self.start_check_btn.place(x=559,y=238)
+        checkrequest.place (x=60, y=240)
         click_ = Button (self.root, text="Click Me", width=20, command=lambda: self.clicked (checkrequest, txt))
-        click_.place (y=270)
+        click_.place (x=60,y=270)
 
     # ----------------------------------------------------------------------
     def clicked(self, checkrequest, txt):
@@ -159,7 +197,7 @@ class MyApp (object):
             test_cookie = cookie_test (open ('cookie.txt').read ())
             if test_cookie is True:
                 checkrequest.configure (text="状态正常")
-                self.btn.pack ()
+                self.start_check_btn.place(x=559,y=238)
                 return True
             elif test_cookie is TimeoutError:
                 checkrequest.configure (text="网络异常")
@@ -179,7 +217,7 @@ class MyApp (object):
                 return False
             elif test_cookie2 is True:
                 checkrequest.configure (text="状态正常")
-                self.btn.pack ()
+                self.start_check_btn.place(x=559,y=238)
                 return True
             else:
                 checkrequest.configure (text="状态异常,请测试cookie")

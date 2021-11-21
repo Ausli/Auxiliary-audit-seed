@@ -1,11 +1,11 @@
-from fake_useragent import UserAgent
+
 import random
 import requests
 import re
 from pyhtml.headersdata import headersdata
 import os
 import time
-ua=UserAgent()
+
 def cookie_test(cookie_data):
     try:
         f = open ('cookie_check.txt', 'a', encoding='utf8')
